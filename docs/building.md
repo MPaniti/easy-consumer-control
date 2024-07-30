@@ -14,5 +14,5 @@ cd .. && ./fbt
 ./fbt fap_usb_ccb
 
 # Copy built application to your SD card
-cp build/f7-firmware-D/.extapps/usb_ccb.fap <SD Card root>/apps/usb/ 
+cp build/f7-firmware-D/.extapps/usb_ccb.fap <SD Card root>/apps/usb/
 ```

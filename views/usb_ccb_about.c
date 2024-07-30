@@ -35,7 +35,7 @@ static bool usb_ccb_about_input_callback(InputEvent* event, void* context) {
 
     if(event->type == InputTypeLong && event->key == InputKeyBack) {
         furi_hal_hid_kb_release_all();
-    } 
+    }
 
     return consumed;
 }

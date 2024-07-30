@@ -9,6 +9,7 @@ enum UsbDebugSubmenuIndex {
     UsbCcbSubmenuIndexAbout,
     UsbCcbSubmenuIndexHelp,
     UsbCcbSubmenuIndexStart,
+    UsbCcbSubmenuIndexHid,
 };
 
 void usb_ccb_submenu_callback(void* context, uint32_t index) {
@@ -68,6 +69,7 @@ UsbCcb* usb_ccb_app_alloc() {
     submenu_add_item(app->submenu, "About", UsbCcbSubmenuIndexAbout, usb_ccb_submenu_callback, app);
     submenu_add_item(app->submenu, "Help", UsbCcbSubmenuIndexHelp, usb_ccb_submenu_callback, app);
     submenu_add_item(app->submenu, "Start", UsbCcbSubmenuIndexStart, usb_ccb_submenu_callback, app);
+    submenu_add_item(app->submenu, "HID", UsbCcbSubmenuIndexHid, usb_ccb_submenu_callback, app);  // Add menu item for HID
     view_set_previous_callback(submenu_get_view(app->submenu), usb_ccb_exit);
     view_dispatcher_add_view(app->view_dispatcher, UsbCcbViewSubmenu, submenu_get_view(app->submenu));
 
@@ -96,6 +98,11 @@ UsbCcb* usb_ccb_app_alloc() {
     view_set_previous_callback(usb_ccb_start_get_view(app->usb_ccb_start), usb_ccb_exit_confirm_view);
     view_dispatcher_add_view(app->view_dispatcher, UsbCcbViewStart, usb_ccb_start_get_view(app->usb_ccb_start));
 
+    // HID view
+    app->usb_ccb_hid = usb_ccb_hid_alloc();
+    view_set_previous_callback(usb_ccb_hid_get_view(app->usb_ccb_hid), usb_ccb_exit_confirm_view);
+    view_dispatcher_add_view(app->view_dispatcher, UsbCcbViewHid, usb_ccb_hid_get_view(app->usb_ccb_hid));  // Add HID view
+
     app->view_id = UsbCcbViewSubmenu;
     view_dispatcher_switch_to_view(app->view_dispatcher, app->view_id);
 
@@ -119,6 +126,8 @@ void usb_ccb_app_free(UsbCcb* app) {
     usb_ccb_help_free(app->usb_ccb_help);
     view_dispatcher_remove_view(app->view_dispatcher, UsbCcbViewStart);
     usb_ccb_start_free(app->usb_ccb_start);
+    view_dispatcher_remove_view(app->view_dispatcher, UsbCcbViewHid);  // Remove HID view
+    usb_ccb_hid_free(app->usb_ccb_hid);  // Free HID view
     view_dispatcher_free(app->view_dispatcher);
     // Close records
     furi_record_close(RECORD_GUI);

@@ -566,7 +566,7 @@ static void usb_ccb_start_draw_callback(Canvas* canvas, void* context) {
         furi_delay_us(autofire_delay * 500);
         furi_hal_hid_consumer_key_press(consumer_key);
         furi_delay_us(2000); // Hold the key pressed for a short amount of time
-        
+
         // Stop sending the consumer control button
         furi_hal_hid_consumer_key_release(consumer_key);
         furi_delay_us(autofire_delay * 500);
@@ -576,7 +576,7 @@ static void usb_ccb_start_draw_callback(Canvas* canvas, void* context) {
 
         // Stop once we've cycled all consumer control buttons
         if(i == hidConsumerArraySize){
-            i = 0; 
+            i = 0;
             is_running = false;
         }
     }
